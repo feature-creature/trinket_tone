@@ -148,101 +148,115 @@
 * PROGMEM is needed because of the large data size.
 * "Prelude in C" Well-Tempered Clavier, J.S.Bach
 *************************************************/
-#define NOTECOUNT 544 // length of array
+#define NOTECOUNT 87 // length of array
 
 
 // progmem needed for large array. why?
 #include <avr/pgmspace.h> // needed for PROGMEM
 PROGMEM const uint16_t noteArray[] = {
-  C4, E4, G4, C5, E5, G4, C5, E5, //measures 1-2, notes 1-32
-  C4, E4, G4, C5, E5, G4, C5, E5,
-  C4, D4, A4, D5, F5, A4, D5, F5,
-  C4, D4, A4, D5, F5, A4, D5, F5,
-  B3, D4, G4, D5, F5, G4, D5, F5, //measures 3-4, notes 33-64
-  B3, D4, G4, D5, F5, G4, D5, F5,
-  C4, E4, G4, C5, E5, G4, C5, E5,
-  C4, E4, G4, C5, E5, G4, C5, E5,
-
-  C4, E4, A4, E5, A5, A4, E5, A5, //measures 5-6, notes 65-96
-  C4, E4, A4, E5, A5, A4, E5, A5,
-  C4, D4, FS4, A4, D5, FS4, A4, D5,
-  C4, D4, FS4, A4, D5, FS4, A4, D5,
-
-  B3, D4, G4, D5, G5, G4, D5, G5, //measures 7-8, notes 97-128
-  B3, D4, G4, D5, G5, G4, D5, G5,
-  B3, C4, E4, G4, C5, E4, G4, C5,
-  B3, C4, E4, G4, C5, E4, G4, C5,
-
-  A3, C4, E4, G4, C5, E4, G4, C5, //measures 9-10, notes 129-160
-  A3, C4, E4, G4, C5, E4, G4, C5,
-  D3, A3, D4, FS4, C5, D4, FS4, C5,
-  D3, A3, D4, FS4, C5, D4, FS4, C5,
-
-  G3, B3, D4, G4, B4, D4, G4, B4, //measures 11-12, notes 161-192
-  G3, B3, D4, G4, B4, D4, G4, B4,
-  G3, AS3, E4, G4, CS5, E4, G4, CS5,
-  G3, AS3, E4, G4, CS5, E4, G4, CS5,
-  F3, A3, D4, A4, D5, D4, A4, D5, //measures 13-14, notes 193-224
-  F3, A3, D4, A4, D5, D4, A4, D5,
-  F3, GS3, D4, F4, B4, D4, F4, B4,
-  F3, GS3, D4, F4, B4, D4, F4, B4,
-
-  E3, G3, C4, G4, C5, C4, G4, C5, //measures 15-16, notes 225-256
-  E3, G3, C4, G4, C5, C4, G4, C5,
-  E3, F3, A3, C4, F4, A3, C4, F4,
-  E3, F3, A3, C4, F4, A3, C4, F4,
-
-  D3, F3, A3, C4, F4, A3, C4, F4, //measures 17-18, notes 257-288
-  D3, F3, A3, C4, F4, A3, C4, F4,
-  G2, D3, G3, B3, F4, G3, B3, F4,
-  G2, D3, G3, B3, F4, G3, B3, F4,
-  C3, E3, G3, C4, E4, G3, C4, E4, //measures 19-20, notes 289-320
-  C3, E3, G3, C4, E4, G3, C4, E4,
-  C3, G3, AS3, C4, E4, AS3, C4, E4,
-  C3, G3, AS3, C4, E4, AS3, C4, E4,
-  F2, F3, A3, C4, E4, A3, C4, E4, //measures 21-22, notes 321-352
-  F2, F3, A3, C4, E4, A3, C4, E4,
-  FS2, C3, A3, C4, DS4, A3, C4, DS4,
-  FS2, C3, A3, C4, DS4, A3, C4, DS4,
-  GS2, F3, B3, C4, D4, B3, C4, D4, //measures 23-24, notes 353-384
-  GS2, F3, B3, C4, D4, B3, C4, D4,
-  G2, F3, G3, B3, D4, G3, B3, D4,
-  G2, F3, G3, B3, D4, G3, B3, D4,
-
-  G2, E3, G3, C4, E4, G3, C4, E4, //meaures 25-26, notes 385-416
-  G2, E3, G3, C4, E4, G3, C4, E4,
-  G2, D3, G3, C4, F4, G3, C4, F4,
-  G2, D3, G3, C4, F4, G3, C4, F4,
-  G2, D3, G3, B3, F4, G3, B3, F4, //measures 27-28, notes 417-448
-  G2, D3, G3, B3, F4, G3, B3, F4,
-  G2, DS3, A3, C4, FS4, A3, C4, FS4,
-  G2, DS3, A3, C4, FS4, A3, C4, FS4,
-  G2, E3, G3, C4, G4, G3, C4, G4, //measures 29-30, notes 449-480
-  G2, E3, G3, C4, G4, G3, C4, G4,
-  G2, F3, G3, C4, F4, G3, C4, F4,
-  G2, F3, G3, C4, F4, G3, C4, F4,
-  G2, F3, G3, B3, F4, G3, B3, F4, //measures 31-32, notes 481-512
-  G2, F3, G3, B3, F4, G3, B3, F4,
-  C2, C3, G3, AS3, E4, G3, AS3, E4,
-  C2, C3, G3, AS3, E4, G3, AS3, E4,
-  C2, C3, F3, A3, C4, F4, C4, A3, //measures 33-34, notes 513-544
-  C4, A3, F3, A3, F3, D3, F3, D3,
-  C2, B2, G4, B4, D5, F5, D5, B4,
-  D5, B4, G4, B4, D4, F4, E4, D4,
+  B0,
+  C1,
+  CS1,
+  D1,
+  DS1,
+  E1,
+  F1,
+  FS1,
+  G1,
+  GS1,
+  A1,
+  AS1,
+  B1,
+  C2,
+  CS2,
+  D2,
+  DS2,
+  E2,
+  F2,
+  FS2,
+  G2,
+  GS2,
+  A2,
+  AS2,
+  B2,
+  C3,
+  CS3,
+  D3,
+  DS3,
+  E3,
+  F3,
+  FS3,
+  G3,
+  GS3,
+  A3,
+  AS3,
+  B3,
+  C4,
+  CS4,
+  D4,
+  DS4,
+  E4,
+  F4,
+  FS4,
+  G4,
+  GS4,
+  A4,
+  AS4,
+  B4,
+  C5,
+  CS5,
+  D5,
+  DS5,
+  E5,
+  F5,
+  FS5,
+  G5,
+  GS5,
+  A5,
+  AS5,
+  B5,
+  C6,
+  CS6,
+  D6,
+  DS6,
+  E6,
+  F6,
+  FS6,
+  G6,
+  GS6,
+  A6,
+  AS6,
+  B6,
+  C7,
+  CS7,
+  D7,
+  DS7,
+  E7,
+  F7,
+  FS7,
+  G7,
+  GS7,
+  A7,
+  AS7,
+  B7,
+  C8,
+  CS8,
+  D8,
+  DS8
 };
 
 // the 'volatile' variable qualifier directs the compiler to load the unsigned 32-bit integer from RAM (not from a storage register)
 volatile uint32_t toggle_count;
 
-void setup(){
-  pinMode(1, OUTPUT); // enable OUTPUT (PB1, #1)
-  PlayBach(); // Music!
-  pinMode(1, INPUT); // disable OUTPUT
+
+void setup() {
+    pinMode(1, OUTPUT); // enable OUTPUT (PB1, #1)
 }
 
-void loop(){
-  // only play once from setup
+void loop() {
+    playMusic();
 }
+
 
 
 // TrinketTone:
@@ -252,7 +266,7 @@ void loop(){
 // Generated tone is non-blocking,
 // so routine immediately returns while tone is playing.
 
-void TrinketTone(uint16_t frequency, uint32_t duration){
+void TrinketTone(uint16_t frequency,uint32_t duration) {
   // scan through prescalars to find the best fit
   uint32_t ocr = F_CPU / frequency / 2;
   uint8_t prescalarBits = 1;
@@ -264,11 +278,12 @@ void TrinketTone(uint16_t frequency, uint32_t duration){
   TCCR1 = 0x90 | prescalarBits;
 
   // Calculate note duration in terms of toggle count
-  // Duration will be tracked by timer1 ISR
+  //Duration will be tracked by timer1 ISR
   toggle_count = frequency * duration / 500;
   OCR1C = ocr - 1; // Set the OCR
   bitWrite(TIMSK, OCIE1A, 1); // enable interrupt
 }
+
 
 // Timer1 Interrupt Service Routine:
 // Keeps track of note duration via toggle counter
@@ -281,22 +296,12 @@ ISR(TIMER1_COMPA_vect){
     TCCR1 = 0x90; // stop the counter
 }
 
-// PlayBach:
-// Plays "Prelude in C", which is held in noteArray
-// Uses PROGMEM to store array, due to large size
-
-void PlayBach(){
-  int len = 150; // modify for speed
-  int dly = 190; // modify for articulation
+void playMusic(){
+  int dly = 75; // modify for articulation
   for (int count = 0; count < NOTECOUNT; count++){
-    TrinketTone( pgm_read_word( &noteArray[count] ), len);
+    TrinketTone( pgm_read_word( &noteArray[count]),100);
     delay(dly);
-    // slow down (rit.) at end.
-    if ((count > 512) and (count < 540)) {
-      len += 3;
-      dly += 5;
-    }
   }
-  TrinketTone(C4, 1500); // final note
-  delay(1500);
 }
+
+
