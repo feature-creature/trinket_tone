@@ -139,21 +139,7 @@
 #define DWN 96 // dotted whole note
 
 
-
-// my tone array will be dynamically built via potentiometer input
-
-
-/*************************************************
-* Music Content is stored in the following array.
-* PROGMEM is needed because of the large data size.
-* "Prelude in C" Well-Tempered Clavier, J.S.Bach
-*************************************************/
-#define NOTECOUNT 87 // length of array
-
-
-// progmem needed for large array. why?
-#include <avr/pgmspace.h> // needed for PROGMEM
-PROGMEM const uint16_t noteArray[] = {
+const uint16_t noteArray[] = {
   B0,
   C1,
   CS1,
@@ -244,20 +230,54 @@ PROGMEM const uint16_t noteArray[] = {
   D8,
   DS8
 };
-
+//#include <avr/power.h>
 // the 'volatile' variable qualifier directs the compiler to load the unsigned 32-bit integer from RAM (not from a storage register)
 volatile uint32_t toggle_count;
 
+const int ledPin = 1;
+int capPotVal;
+int capPotMin = 1023;
+int capPotMax = 0;
 
 void setup() {
-    pinMode(1, OUTPUT); // enable OUTPUT (PB1, #1)
+//  if (F_CPU == 16000000) clock_prescale_set(clock_div_1);
+  pinMode(ledPin, OUTPUT);
+
+  // calibrate soft pot
+  indicateCalibrate();
+  while (millis() < 10500) {
+    capPotVal = analogRead(1);
+    if (capPotVal > capPotMax) {
+      capPotMax = capPotVal;
+    }
+    if (capPotVal < capPotMin) {
+      capPotMin = capPotVal;
+    }
+  }
+  indicateCalibrate();
+
 }
 
 void loop() {
-    playMusic();
+  // capacitive touch potentiometer @ 5V : from 1/3 Vcc to 2/3 Vcc
+  // 341 - 683
+  // pin 4 (physically on the board) is referenced as pin 2 in the 'analogRead' context
+  capPotVal = analogRead(1);
+  int potMap = constrain(map(capPotVal, capPotMin, capPotMax - (capPotMax / 15), 0, 88), 0, 88);
+  //  int potMap = map(capPotVal, 0, 1023, 0, 88);
+  //  beep(ledPin, noteArray[potMap], 1000);
+  //  delay(100);
+  if (potMap < 75) {
+    playMusic(potMap);
+    //    beep(ledPin, noteArray[potMap], 100);
+    //    delay(100);
+  }
 }
 
 
+// If you have a speaker connected to an output pin running analogOut(),
+// you’ll get a changing loudness, but a constant tone.
+// To change the tone, you need to change the frequency.
 
 // TrinketTone:
 // Generate a square wave on a given frequency & duration
@@ -266,7 +286,7 @@ void loop() {
 // Generated tone is non-blocking,
 // so routine immediately returns while tone is playing.
 
-void TrinketTone(uint16_t frequency,uint32_t duration) {
+void TrinketTone(uint16_t frequency, uint32_t duration) {
   // scan through prescalars to find the best fit
   uint32_t ocr = F_CPU / frequency / 2;
   uint8_t prescalarBits = 1;
@@ -289,19 +309,39 @@ void TrinketTone(uint16_t frequency,uint32_t duration) {
 // Keeps track of note duration via toggle counter
 // When correct time has elapsed, counter is disabled
 
-ISR(TIMER1_COMPA_vect){
+ISR(TIMER1_COMPA_vect) {
   if (toggle_count != 0) // done yet?
     toggle_count--; // no, keep counting
   else // yes,
     TCCR1 = 0x90; // stop the counter
 }
 
-void playMusic(){
-  int dly = 75; // modify for articulation
-  for (int count = 0; count < NOTECOUNT; count++){
-    TrinketTone( pgm_read_word( &noteArray[count]),100);
-    delay(dly);
+void playMusic(int noteSelected) {
+  int len = 1000; // modify for speed (?)
+  int dly = 100; // modify for articulation
+  TrinketTone(noteArray[noteSelected], len);
+  delay(dly);
+}
+
+void indicateCalibrate() {
+  for (int i = 0; i < 6; i++) {
+    digitalWrite(ledPin, HIGH);
+    delay(50 * (6 - i));
+    digitalWrite(ledPin, LOW);
+    delay(50 * (6 - i));
   }
 }
 
-
+// The sound-producing function
+void beep (unsigned char speakerPin, int frequencyInHertz, long timeInMilliseconds)
+{ // http://web.media.mit.edu/~leah/LilyPad/07_sound_code.html
+  int  x;
+  long delayAmount = (long)(1000000 / frequencyInHertz);
+  long loopTime = (long)((timeInMilliseconds * 1000) / (delayAmount * 2));
+  for (x = 0; x < loopTime; x++) {
+    digitalWrite(speakerPin, HIGH);
+    delayMicroseconds(delayAmount);
+    digitalWrite(speakerPin, LOW);
+    delayMicroseconds(delayAmount);
+  }
+}
