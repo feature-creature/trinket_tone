@@ -230,7 +230,7 @@ const uint16_t noteArray[] = {
   D8,
   DS8
 };
-//#include <avr/power.h>
+#include <avr/power.h>
 // the 'volatile' variable qualifier directs the compiler to load the unsigned 32-bit integer from RAM (not from a storage register)
 volatile uint32_t toggle_count;
 
@@ -240,7 +240,7 @@ int capPotMin = 1023;
 int capPotMax = 0;
 
 void setup() {
-//  if (F_CPU == 16000000) clock_prescale_set(clock_div_1);
+  if (F_CPU == 16000000) clock_prescale_set(clock_div_1);
   pinMode(ledPin, OUTPUT);
 
   // calibrate soft pot
